@@ -48,5 +48,4 @@ public class Map {
 	this.event = event;
 	}
 
-	
 }
