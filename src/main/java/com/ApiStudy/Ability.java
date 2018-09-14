@@ -8,6 +8,7 @@ public class Ability {
 	private String description;
 	private Boolean isUltimate;
 	private String url;
+	
 
 	public Integer getId() {
 	return id;
