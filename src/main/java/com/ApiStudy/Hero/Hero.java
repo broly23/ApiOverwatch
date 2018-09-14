@@ -2,25 +2,27 @@ package com.ApiStudy.Hero;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Hero {
 	
-	@JsonIgnore
 	private Integer id;
 	private String name;
 	private String description;
 	private Integer health;
 	private Integer armour;
 	private Integer shield;
+	@JsonProperty("real_name")
 	private String realName;
 	private Integer age;
 	private Object height;
 	private String affiliation;
+	@JsonProperty("base_of_operations")
 	private String baseOfOperations;
 	private Integer difficulty;
 	private String url;
 	private Role role;
+	@JsonProperty("sub_roles")
 	private List<SubRole> subRoles = null;
 	private List<Ability> abilities = null;
 
