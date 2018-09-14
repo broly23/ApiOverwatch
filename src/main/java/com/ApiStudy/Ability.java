@@ -1,9 +1,6 @@
 package com.ApiStudy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Ability {
-	
 	
 	
 	private Integer id;
