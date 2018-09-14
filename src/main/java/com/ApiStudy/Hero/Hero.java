@@ -1,4 +1,4 @@
-package com.ApiStudy;
+package com.ApiStudy.Hero;
 
 import java.util.List;
 

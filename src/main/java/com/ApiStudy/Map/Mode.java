@@ -1,6 +1,6 @@
-package com.ApiStudy;
+package com.ApiStudy.Map;
 
-public class SubRole {
+public class Mode {
 	
 	private Integer id;
 	private String name;
@@ -20,6 +20,5 @@ public class SubRole {
 	public void setName(String name) {
 	this.name = name;
 	}
-	
 
 }

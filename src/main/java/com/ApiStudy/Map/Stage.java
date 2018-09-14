@@ -1,6 +1,6 @@
-package com.ApiStudy;
+package com.ApiStudy.Map;
 
-public class Role {
+public class Stage {
 	
 	private Integer id;
 	private String name;
@@ -20,6 +20,5 @@ public class Role {
 	public void setName(String name) {
 	this.name = name;
 	}
-	
 
 }

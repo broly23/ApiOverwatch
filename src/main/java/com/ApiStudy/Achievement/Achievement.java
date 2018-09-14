@@ -1,14 +1,15 @@
-package com.ApiStudy;
+package com.ApiStudy.Achievement;
 
-public class Ability {
-	
-	
+import com.ApiStudy.Hero.Hero;
+
+public class Achievement {	
+
 	private Integer id;
 	private String name;
 	private String description;
-	private Boolean isUltimate;
 	private String url;
-	
+	private Hero hero;
+	private Reward reward;
 
 	public Integer getId() {
 	return id;
@@ -34,14 +35,6 @@ public class Ability {
 	this.description = description;
 	}
 
-	public Boolean getIsUltimate() {
-	return isUltimate;
-	}
-
-	public void setIsUltimate(Boolean isUltimate) {
-	this.isUltimate = isUltimate;
-	}
-
 	public String getUrl() {
 	return url;
 	}
@@ -50,5 +43,19 @@ public class Ability {
 	this.url = url;
 	}
 
-	
+	public Hero getHero() {
+	return hero;
+	}
+
+	public void setHero(Hero hero) {
+	this.hero = hero;
+	}
+
+	public Reward getReward() {
+	return reward;
+	}
+
+	public void setReward(Reward reward) {
+	this.reward = reward;
+	}
 }
