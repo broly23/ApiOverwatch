@@ -1,6 +1,5 @@
 package com.ApiStudy;
 
-public class Map {
-	
+public class Map {	
 
 }

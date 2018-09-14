@@ -1,6 +1,5 @@
 package com.ApiStudy;
 
-public class OwController {
-	
+public class OwController {	
 
 }

@@ -1,6 +1,5 @@
 package com.ApiStudy;
 
-public class Reward {
-	
+public class Reward {	
 
 }
