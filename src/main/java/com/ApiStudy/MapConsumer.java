@@ -3,6 +3,7 @@ package com.ApiStudy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +17,19 @@ import org.springframework.web.client.RestTemplate;
 import com.ApiStudy.Map.Map;
 import com.ApiStudy.Map.MapBean;
 import com.ApiStudy.Map.MapBoot;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 @Configuration
 public class MapConsumer {
 	
 	private static final String endpoint = "https://overwatch-api.net/api/v1/map";
 
+	private Cache<String, List<Map>> cache = Caffeine.newBuilder()
+			  .expireAfterWrite(10, TimeUnit.MINUTES)
+			  .maximumSize(10)
+			  .build();
+	
 	@Bean
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
@@ -38,6 +46,9 @@ public class MapConsumer {
 	}
 	
 	public List<Map> getMaps(){
+		if(cache.getIfPresent("maps") != null) {
+			return cache.getIfPresent("maps");
+		}
 		List<Map> maps = new ArrayList<>();
 		MapBoot mb = getMapBoot();
 		for( MapBean mbean : mb.getData()) {
@@ -49,6 +60,7 @@ public class MapConsumer {
 	        ResponseEntity<Map> resp = restTemplate().exchange(mapUrl, HttpMethod.GET,entity,Map.class);
 			maps.add(resp.getBody());
 		}
+		cache.put("maps", maps);
 		return maps;
 	}
 }

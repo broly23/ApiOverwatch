@@ -3,6 +3,7 @@ package com.ApiStudy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +17,18 @@ import org.springframework.web.client.RestTemplate;
 import com.ApiStudy.Hero.Hero;
 import com.ApiStudy.Hero.HeroBean;
 import com.ApiStudy.Hero.HeroBoot;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 @Configuration
 public class HeroConsumer {
 
 	private static final String endpoint = "https://overwatch-api.net/api/v1/hero";
+	
+	private Cache<String, List<Hero>> cache = Caffeine.newBuilder()
+			  .expireAfterWrite(10, TimeUnit.MINUTES)
+			  .maximumSize(10)
+			  .build();
 	
 	@Bean
 	public RestTemplate restTemplate() {
@@ -39,6 +47,9 @@ public class HeroConsumer {
 	}
 	
 	public List<Hero> getHeroes(){
+		if(cache.getIfPresent("heroes") != null) {
+			return cache.getIfPresent("heroes");
+		}
 		List<Hero> heroes = new ArrayList<>();
 		HeroBoot hb = getHeroBoot();
 		for( HeroBean hbean : hb.getData()) {
@@ -50,6 +61,7 @@ public class HeroConsumer {
 	        ResponseEntity<Hero> resp = restTemplate().exchange(heroUrl, HttpMethod.GET,entity,Hero.class);
 			heroes.add(resp.getBody());
 		}
+		cache.put("heroes", heroes);
 		return heroes;
 	}
 	
