@@ -8,7 +8,7 @@ public class Reward {
 	private Integer id;
 	private String name;
 	private Object cost;
-	private String url;
+	 String url;
 	private ArrayList < Map<String, String> > type = new ArrayList < Map<String, String> > ();
 	private Map<String, String> quality;
 

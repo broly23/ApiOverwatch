@@ -153,6 +153,8 @@ public class Hero {
 	public void setAbilities(List<Ability> abilities) {
 		this.abilities = abilities;
 	}
+	
+	
 
 
 }
