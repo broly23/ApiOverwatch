@@ -2,6 +2,8 @@ package com.ApiStudy.Hero;
 
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Hero {
@@ -154,7 +156,34 @@ public class Hero {
 		this.abilities = abilities;
 	}
 	
+	public String getRoleTemp() {
+		String roleTemp = "";
+		roleTemp += StringUtils.capitalize(this.getRole().getName());
+		roleTemp += "(" + "<b>Id: </b>" + Integer.toString(this.getRole().getId())+ ")" + "<BR>";
+		return roleTemp;
+	}
+	public String getSubRoleTemp() {
+		String subRoleTemp = "<BR>";
+		for (SubRole s : subRoles) {
+			subRoleTemp += "<b><span style=\"margin-left:2em\">Id: </b>" + s.getId() + "</span>" + "<BR>";
+			subRoleTemp += "<b><span style=\"margin-left:2em\">Nome: </b>" + s.getName()  + "</span>" + "<BR>";
+		}
+		
+		return subRoleTemp;
+	}
 	
+	public String getAbilityTemp () {
+		String abilityTemp = "";
+		for (Ability a : abilities) {
+			abilityTemp += "<b><blockquote>Id: </b>" + a.getId() +  "<BR>";
+			abilityTemp += "<b>Name: </b>" + a.getName() +  "<BR>";
+			abilityTemp += "<b>Description: </b>" + a.getDescription() + "<BR>";
+			abilityTemp += "<b>IsUltimate: </b>" +  a.getIsUltimate() + "<BR>";
+			abilityTemp += "<b>Url: </b>" + a.getUrl() + "</blockquote>";
+		}
+		return abilityTemp;
+		
+	}
 
 
 }

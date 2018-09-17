@@ -1,11 +1,14 @@
 package com.ApiStudy.Hero;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Ability {
 	
 	
 	private Integer id;
 	private String name;
 	private String description;
+	@JsonProperty("is_ultimate")
 	private Boolean isUltimate;
 	private String url;
 	
