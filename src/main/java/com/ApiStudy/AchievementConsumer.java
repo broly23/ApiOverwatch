@@ -3,6 +3,7 @@ package com.ApiStudy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -19,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ApiStudy.Achievement.Achievement;
 import com.ApiStudy.Achievement.AchievementBoot;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 
 @Configuration
@@ -26,6 +29,11 @@ public class AchievementConsumer {
 
 	private static final String endpoint = "https://overwatch-api.net/api/v1/achievement";
 
+	private Cache<String, List<Achievement>> cache = Caffeine.newBuilder()
+			  .expireAfterWrite(10, TimeUnit.MINUTES)
+			  .maximumSize(10)
+			  .build();
+	
 	@Bean
 	public RestTemplate restTemplate() {
 		final RestTemplate restTemplate = new RestTemplate();
@@ -37,6 +45,11 @@ public class AchievementConsumer {
 	}
 
 	public List<Achievement> getAchievements() {
+		
+		if(cache.getIfPresent("achievements") != null) {
+			return cache.getIfPresent("achievements");
+		}
+		
 		List<Achievement> achievements = new ArrayList<Achievement>();
 		String url = endpoint;
 		while (url != null) {
@@ -54,7 +67,9 @@ public class AchievementConsumer {
 			achievements.addAll(resp.getBody().getData());
 			url = resp.getBody().getNext();
 		}
-
+		
+		cache.put("achievements", achievements);
+		
 		return achievements;
 	}
 

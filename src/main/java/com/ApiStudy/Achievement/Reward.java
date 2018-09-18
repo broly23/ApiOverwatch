@@ -1,6 +1,5 @@
 package com.ApiStudy.Achievement;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Reward {

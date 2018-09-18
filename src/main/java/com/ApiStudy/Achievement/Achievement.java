@@ -57,16 +57,16 @@ public class Achievement {
 	
 	public String getRewardToString() {
 		String rewardString = "";
-		rewardString += "<b>Id: </b>" + reward.getId() + "<BR>";
-		rewardString += "<b>Name: </b>" + reward.getName() + "<BR>";
-		rewardString += "<b>Cost: </b>" + reward.getCost() + "<BR>";
-		rewardString += "<b>URL: </b>" + reward.getUrl() + "<BR>";
-		rewardString += "<b>Type: </b><BR>";
-		rewardString += "<b>Id: </b>" + reward.getType().get(Reward.idType) + "<BR>";
-		rewardString += "<b>Name: </b>" + reward.getType().get(Reward.nameType) + "<BR>";
-		rewardString += "<b>URL: </b>" + reward.getType().get(Reward.urlType) + "<BR>";
-		rewardString += "<b>Quality: </b><BR>";
-		rewardString += "<b>Id: </b>" + reward.getQuality().get(Reward.nameQuality) + "<BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">Id: </b>" + reward.getId() + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">Name: </b>" + reward.getName() + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">Cost: </b>" + reward.getCost() + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">URL: </b>" + reward.getUrl() + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">Type: </b></span><BR>";
+		rewardString += "<b><span style=\"margin-left:3em\">Id: </b>" + reward.getType().get(Reward.idType) + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:3em\">Name: </b>" + reward.getType().get(Reward.nameType) + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:3em\">URL: </b>" + reward.getType().get(Reward.urlType) + "</span><BR>";
+		rewardString += "<b><span style=\"margin-left:2em\">Quality: </b></span><BR>";
+		rewardString += "<b><span style=\"margin-left:3em\">Id: </b>" + reward.getQuality().get(Reward.nameQuality) + "</span><BR>";
 		return rewardString;
 		
 	}

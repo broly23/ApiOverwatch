@@ -1,5 +1,6 @@
 package com.ApiStudy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,43 +12,43 @@ import com.ApiStudy.Achievement.Achievement;
 import com.ApiStudy.Hero.Hero;
 import com.ApiStudy.Map.Map;
 
-
 @RestController
-public class OwController {	
+public class OwController {
 
 	/*------------*/
 	/*-AUTOWIREDS-*/
 	/*------------*/
-	
+
 	@Autowired
 	HeroConsumer heroConsumer;
 	@Autowired
 	AchievementConsumer achievementConsumer;
 	@Autowired
 	MapConsumer mapConsumer;
-	
+
 	/*------------*/
 	/*---HEROES---*/
 	/*------------*/
-	
+
 	@RequestMapping(value = "/heroes")
-	public List<Hero> getHeroes(){
+	public List<Hero> getHeroes() {
 		return heroConsumer.getHeroes();
 	}
-	
-	@RequestMapping(value = "/heroes/{id}", produces = {"text/html"})
-	public String getHeroId(@PathVariable("id") String feature){
-		
+
+	@RequestMapping(value = "/heroes/{id}", produces = { "text/html" })
+	public String getHeroId(@PathVariable("id") String feature) {
+
 		Hero h = new Hero();
 		int id = Integer.parseInt(feature);
-		for(Hero temp : heroConsumer.getHeroes()) {
+		for (Hero temp : heroConsumer.getHeroes()) {
 			h = temp;
-			if(h.getId() == id)break; 
+			if (h.getId() == id)
+				break;
 		}
 		String htm = "<html><head><h1 style=\"color:blue;\"><span style=\"margin-left:3em\">"
 				+ "<b>Hero</b></h1></span></head><body>";
 		htm += "<b>Id: </b>" + h.getId() + "<BR>";
-		htm += "<b>Nome: </b>" + h.getName() + "<BR>"; 
+		htm += "<b>Nome: </b>" + h.getName() + "<BR>";
 		htm += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
 		htm += "<b>Age: </b>" + h.getAge() + "<BR>";
 		htm += "<b>Height: </b>" + h.getHeight() + "<BR>";
@@ -61,29 +62,29 @@ public class OwController {
 		htm += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
 		htm += "<b>Description: </b>" + h.getDescription() + "<BR>";
 		htm += "<b>Abilities: </b>" + h.getAbilityTemp();
-		
-		
+
 		htm += "</body></html>";
 		return htm;
 	}
-	
+
 	/*------------*/
 	/*----MAPS----*/
 	/*------------*/
-	
+
 	@RequestMapping(value = "/maps")
-	public List<Map> getMaps(){
+	public List<Map> getMaps() {
 		return mapConsumer.getMaps();
 	}
-	
-	@RequestMapping(value = "/maps/{id}", produces = {"text/html"})
-	public String getMapId(@PathVariable("id") String feature){
-		
+
+	@RequestMapping(value = "/maps/{id}", produces = { "text/html" })
+	public String getMapId(@PathVariable("id") String feature) {
+
 		Map m = new Map();
 		int id = Integer.parseInt(feature);
-		for(Map temp : mapConsumer.getMaps()) {
+		for (Map temp : mapConsumer.getMaps()) {
 			m = temp;
-			if(m.getId() == id)break; 
+			if (m.getId() == id)
+				break;
 		}
 		String htm = "<html><head><h1 style=\"color:green;\"><span style=\"margin-left:3em\">"
 				+ "<b>Map</b></h1></span></head><body>";
@@ -92,38 +93,42 @@ public class OwController {
 		htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
 		htm += "<b>Mode: </b>" + m.getModeTemp() + "<BR>";
 		htm += "<b>Stage: </b>" + m.getStageTemp();
-		
-			htm += "<b>Event: </b>" + m.getEventTemp() + "<BR>";
-		
+
+		htm += "<b>Event: </b>" + m.getEventTemp() + "<BR>";
+
 		return htm;
 	}
-	
+
 	/*------------*/
-	/*ACHIEVEMENTS*/
+	/* ACHIEVEMENTS */
 	/*------------*/
-	
+
 	@RequestMapping(value = "/achievements")
-	public List<Achievement> getAchievements(){
+	public List<Achievement> getAchievements() {
 		return achievementConsumer.getAchievements();
 	}
-	
-	@RequestMapping(value = "/achievements/{heroid}" , produces = {"text/html"})
-	public String getAchievementsByHeroId(@PathVariable("heroid") String heroid){
+
+	@RequestMapping(value = "/achievements/{heroid}", produces = { "text/html" })
+	public String getAchievementsByHeroId(@PathVariable("heroid") String heroid) {
 		int id = Integer.parseInt(heroid);
-		Achievement achievement = new Achievement();
-		for(Achievement a : achievementConsumer.getAchievements()) {
-			if(a.getHero() != null && a.getHero().getId() == id) {
-				achievement = a;
-				break;
+		String heroName = "";
+		List<Achievement> achievements = new ArrayList<Achievement>();
+		for (Achievement a : achievementConsumer.getAchievements()) {
+			if (a.getHero() != null && a.getHero().getId() == id) {
+				achievements.add(a);
+				heroName = a.getHero().getName();
 			}
 		}
-		
-		String htm = "<html><head><b>" + achievement.getHero().getName() + "'s Achievements</b><BR></head><body>";
-		htm += "<b>Id: </b>" + achievement.getId() + "<BR>";
-		htm += "<b>Name: </b>" + achievement.getName() + "<BR>";
-		htm += "<b>Id: </b>" + achievement.getDescription() + "<BR>";
-		htm += "<b>Reward: </b><BR>";
-		htm += achievement.getRewardToString() + "<BR>";
+		String htm = "<html><head><b>" + heroName + "'s Achievements</b><BR><BR></head><body>";
+
+		for (Achievement a : achievements) {
+			htm += "<b>Id: </b>" + a.getId() + "<BR>";
+			htm += "<b>Name: </b>" + a.getName() + "<BR>";
+			htm += "<b>Description: </b>" + a.getDescription() + "<BR>";
+			htm += "<b>Reward: </b><BR>";
+			htm += a.getRewardToString() + "<BR>";
+			
+		}
 		htm += "</body></html>";
 		return htm;
 	}
