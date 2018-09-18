@@ -3,21 +3,33 @@ package com.ApiStudy;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ApiStudy.Achievement.Achievement;
 import com.ApiStudy.Hero.Hero;
 import com.ApiStudy.Map.Map;
 
 
 @RestController
 public class OwController {	
+
+	/*------------*/
+	/*-AUTOWIREDS-*/
+	/*------------*/
 	
 	@Autowired
 	HeroConsumer heroConsumer;
-
+	@Autowired
+	AchievementConsumer achievementConsumer;
+	@Autowired
+	MapConsumer mapConsumer;
+	
+	/*------------*/
+	/*---HEROES---*/
+	/*------------*/
+	
 	@RequestMapping(value = "/heroes")
 	public List<Hero> getHeroes(){
 		return heroConsumer.getHeroes();
@@ -55,8 +67,9 @@ public class OwController {
 		return htm;
 	}
 	
-	@Autowired
-	MapConsumer mapConsumer;
+	/*------------*/
+	/*----MAPS----*/
+	/*------------*/
 	
 	@RequestMapping(value = "/maps")
 	public List<Map> getMaps(){
@@ -82,6 +95,36 @@ public class OwController {
 		
 			htm += "<b>Event: </b>" + m.getEventTemp() + "<BR>";
 		
+		return htm;
+	}
+	
+	/*------------*/
+	/*ACHIEVEMENTS*/
+	/*------------*/
+	
+	@RequestMapping(value = "/achievements")
+	public List<Achievement> getAchievements(){
+		return achievementConsumer.getAchievements();
+	}
+	
+	@RequestMapping(value = "/achievements/{heroid}" , produces = {"text/html"})
+	public String getAchievementsByHeroId(@PathVariable("heroid") String heroid){
+		int id = Integer.parseInt(heroid);
+		Achievement achievement = new Achievement();
+		for(Achievement a : achievementConsumer.getAchievements()) {
+			if(a.getHero() != null && a.getHero().getId() == id) {
+				achievement = a;
+				break;
+			}
+		}
+		
+		String htm = "<html><head><b>" + achievement.getHero().getName() + "'s Achievements</b><BR></head><body>";
+		htm += "<b>Id: </b>" + achievement.getId() + "<BR>";
+		htm += "<b>Name: </b>" + achievement.getName() + "<BR>";
+		htm += "<b>Id: </b>" + achievement.getDescription() + "<BR>";
+		htm += "<b>Reward: </b><BR>";
+		htm += achievement.getRewardToString() + "<BR>";
+		htm += "</body></html>";
 		return htm;
 	}
 }
