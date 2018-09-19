@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ApiStudy.Achievement.Achievement;
 import com.ApiStudy.Hero.Hero;
-import com.ApiStudy.Map.Map;
+import com.ApiStudy.Map.Maps;
 
 @RestController
 public class OwController {
@@ -30,14 +30,36 @@ public class OwController {
 	/*---HEROES---*/
 	/*------------*/
 
-	@RequestMapping(value = "/heroes")
-	public List<Hero> getHeroes() {
-		return heroConsumer.getHeroes();
+	@RequestMapping(value = "/heroes", produces = {"text/html"})
+	public String getHeroes(){
+		String htm = "<html><head><font size=5><b>Hero's Profile</b></head></font><BR><BR><body>";
+		for (Hero h : heroConsumer.getHeroes() ) {
+			htm += "<b>Nome: </b>" + h.getName() + "<BR>";
+			htm += "<b>ID: </b>" + h.getId() + "<BR>";
+			htm += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
+			htm += "<b>Age: </b>" + h.getAge() + "<BR>";
+			htm += "<b>Height: </b>" + h.getHeight() + "<BR>";
+			htm += "<b>Affiliation: </b>" + h.getAffiliation() + "<BR>";
+			htm += "<b>Base of Operations: </b>" + h.getBaseOfOperations() + "<BR>";
+			htm += "<b>Health: </b>" + h.getHealth() + "<BR>";
+			htm += "<b>Armour: </b>" + h.getArmour() + "<BR>";
+			htm += "<b>Shield: </b>" + h.getShield() + "<BR>";
+			htm += "<b>Class: </b>" + h.getRoleToString();
+			htm += "<b>SubClass: </b>" + h.getSubRoleToString();
+			htm += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
+			htm += "<b>Description: </b>" + h.getDescription() + "<BR>";
+			htm += "<b>Abilities: </b>" + h.getAbilityToString();
+			htm += "_____________________________________________<BR><BR>";
+			htm += "</body></html>";
+		}
+		
+		return htm;
 	}
 
 	@RequestMapping(value = "/heroes/{id}", produces = { "text/html" })
 	public String getHeroId(@PathVariable("id") String feature) {
 
+		
 		Hero h = new Hero();
 		int id = Integer.parseInt(feature);
 		for (Hero temp : heroConsumer.getHeroes()) {
@@ -45,9 +67,9 @@ public class OwController {
 			if (h.getId() == id)
 				break;
 		}
-		String htm = "<html><head><h1 style=\"color:blue;\"><span style=\"margin-left:3em\">"
-				+ "<b>Hero</b></h1></span></head><body>";
-		htm += "<b>Id: </b>" + h.getId() + "<BR>";
+		String htm = "<html><head><font size=5><b>"+ h.getName() +"'s Profile</b>"
+				+ "</font></head><body>";
+		htm += "<BR><b>Id: </b>" + h.getId() + "<BR>";
 		htm += "<b>Nome: </b>" + h.getName() + "<BR>";
 		htm += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
 		htm += "<b>Age: </b>" + h.getAge() + "<BR>";
@@ -57,11 +79,11 @@ public class OwController {
 		htm += "<b>Health: </b>" + h.getHealth() + "<BR>";
 		htm += "<b>Armour: </b>" + h.getArmour() + "<BR>";
 		htm += "<b>Shield: </b>" + h.getShield() + "<BR>";
-		htm += "<b>Class: </b>" + h.getRoleTemp();
-		htm += "<b>SubClass: </b>" + h.getSubRoleTemp();
+		htm += "<b>Class: </b>" + h.getRoleToString();
+		htm += "<b>SubClass: </b>" + h.getSubRoleToString();
 		htm += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
 		htm += "<b>Description: </b>" + h.getDescription() + "<BR>";
-		htm += "<b>Abilities: </b>" + h.getAbilityTemp();
+		htm += "<b>Abilities: </b>" + h.getAbilityToString();
 
 		htm += "</body></html>";
 		return htm;
@@ -71,17 +93,28 @@ public class OwController {
 	/*----MAPS----*/
 	/*------------*/
 
-	@RequestMapping(value = "/maps")
-	public List<Map> getMaps() {
-		return mapConsumer.getMaps();
+	@RequestMapping(value = "/maps", produces = {"text/html"})
+	public String getMaps() {
+		String htm = "<html><head><font size=5><b>All Maps</b></head></font><BR><BR><body>";
+		for (Maps m : mapConsumer.getMaps()) {
+			htm += "<b>Id: </b>" + m.getId() + "<BR>";
+			htm += "<b>Nome: </b>" + m.getName() + "<BR>";
+			htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
+			htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
+			htm += "<b>Stage: </b>" + m.getStageToString();
+			htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
+			htm += "_____________________________________________<BR><BR>";
+			htm += "</body></html>";
+		}
+		return htm;
 	}
 
 	@RequestMapping(value = "/maps/{id}", produces = { "text/html" })
 	public String getMapId(@PathVariable("id") String feature) {
 
-		Map m = new Map();
+		Maps m = new Maps();
 		int id = Integer.parseInt(feature);
-		for (Map temp : mapConsumer.getMaps()) {
+		for (Maps temp : mapConsumer.getMaps()) {
 			m = temp;
 			if (m.getId() == id)
 				break;
@@ -91,10 +124,9 @@ public class OwController {
 		htm += "<b>Id: </b>" + m.getId() + "<BR>";
 		htm += "<b>Nome: </b>" + m.getName() + "<BR>";
 		htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
-		htm += "<b>Mode: </b>" + m.getModeTemp() + "<BR>";
-		htm += "<b>Stage: </b>" + m.getStageTemp();
-
-		htm += "<b>Event: </b>" + m.getEventTemp() + "<BR>";
+		htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
+		htm += "<b>Stage: </b>" + m.getStageToString();
+		htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
 
 		return htm;
 	}

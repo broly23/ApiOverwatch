@@ -156,13 +156,13 @@ public class Hero {
 		this.abilities = abilities;
 	}
 	
-	public String getRoleTemp() {
+	public String getRoleToString() {
 		String roleTemp = "";
 		roleTemp += StringUtils.capitalize(this.getRole().getName());
 		roleTemp += "(" + "<b>Id: </b>" + Integer.toString(this.getRole().getId())+ ")" + "<BR>";
 		return roleTemp;
 	}
-	public String getSubRoleTemp() {
+	public String getSubRoleToString() {
 		String subRoleTemp = "<BR>";
 		for (SubRole s : subRoles) {
 			subRoleTemp += "<b><span style=\"margin-left:2em\">Id: </b>" + s.getId() + "</span>" + "<BR>";
@@ -172,7 +172,7 @@ public class Hero {
 		return subRoleTemp;
 	}
 	
-	public String getAbilityTemp () {
+	public String getAbilityToString () {
 		String abilityTemp = "";
 		for (Ability a : abilities) {
 			abilityTemp += "<b><blockquote>Id: </b>" + a.getId() +  "<BR>";
