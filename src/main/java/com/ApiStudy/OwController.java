@@ -88,6 +88,25 @@ public class OwController {
 		htm += "</body></html>";
 		return htm;
 	}
+	
+	@RequestMapping(value = "/heroes/age/{init}/{final}", produces = { "text/html" })
+	public String getHeroAge(@PathVariable("init") String initAge, 
+			@PathVariable("final") String finalAge) {
+		
+		String htm = "<html><head>Heroes</head><body>";
+		int ageI = Integer.parseInt(initAge);
+		int ageF = Integer.parseInt(finalAge);
+		for (Hero temp : heroConsumer.getHeroes()) {
+			if(temp.getAge() >= ageI && temp.getAge() <=ageF) {
+				htm += "<b>Nome: </b>" + temp.getName() + "<BR>";
+				
+				htm += "</body></html>";
+			}
+		}
+		
+		return htm;
+	}
+	
 
 	/*------------*/
 	/*----MAPS----*/

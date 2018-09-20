@@ -1,12 +1,16 @@
 package com.ApiStudy.Hero;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Hero {
+	
+	public static final String idRole = "id";
+	public static final String nameRole = "name";
 	
 	private Integer id;
 	private String name;
@@ -23,7 +27,7 @@ public class Hero {
 	private String baseOfOperations;
 	private Integer difficulty;
 	private String url;
-	private Role role;
+	private Map<String, String> role;
 	@JsonProperty("sub_roles")
 	private List<SubRole> subRoles = null;
 	private List<Ability> abilities = null;
@@ -85,6 +89,9 @@ public class Hero {
 	}
 
 	public Integer getAge() {
+		if(age == null) {
+			 return 0;
+		 }
 		return age;
 	}
 
@@ -132,11 +139,11 @@ public class Hero {
 		this.url = url;
 	}
 
-	public Role getRole() {
+	public Map<String, String> getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(Map<String, String> role) {
 		this.role = role;
 	}
 
@@ -158,8 +165,8 @@ public class Hero {
 	
 	public String getRoleToString() {
 		String roleTemp = "";
-		roleTemp += StringUtils.capitalize(this.getRole().getName());
-		roleTemp += "(" + "<b>Id: </b>" + Integer.toString(this.getRole().getId())+ ")" + "<BR>";
+		roleTemp += StringUtils.capitalize(this.getRole().get(nameRole));
+		roleTemp += "(" + "<b>Id: </b>" + this.getRole().get(idRole)+ ")" + "<BR>";
 		return roleTemp;
 	}
 	public String getSubRoleToString() {
