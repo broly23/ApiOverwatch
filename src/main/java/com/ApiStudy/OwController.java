@@ -6,11 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ApiStudy.Achievement.Achievement;
 import com.ApiStudy.Hero.Hero;
 import com.ApiStudy.Map.Maps;
+import com.google.gson.Gson;
 
 @RestController
 public class OwController {
@@ -29,36 +31,50 @@ public class OwController {
 	/*------------*/
 	/*---HEROES---*/
 	/*------------*/
+	
+	@RequestMapping(value = "/heroes")
+	public String getHeroes(@RequestParam(value="produce", defaultValue="json") String produce) {
+		Gson gson = new Gson();
+		List<Hero> heroes = heroConsumer.getHeroes();
 
-	@RequestMapping(value = "/heroes", produces = {"text/html"})
-	public String getHeroes(){
-		String htm = "<html><head><font size=5><b>Hero's Profile</b></head></font><BR><BR><body>";
-		for (Hero h : heroConsumer.getHeroes() ) {
-			htm += "<b>Nome: </b>" + h.getName() + "<BR>";
-			htm += "<b>ID: </b>" + h.getId() + "<BR>";
-			htm += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
-			htm += "<b>Age: </b>" + h.getAge() + "<BR>";
-			htm += "<b>Height: </b>" + h.getHeight() + "<BR>";
-			htm += "<b>Affiliation: </b>" + h.getAffiliation() + "<BR>";
-			htm += "<b>Base of Operations: </b>" + h.getBaseOfOperations() + "<BR>";
-			htm += "<b>Health: </b>" + h.getHealth() + "<BR>";
-			htm += "<b>Armour: </b>" + h.getArmour() + "<BR>";
-			htm += "<b>Shield: </b>" + h.getShield() + "<BR>";
-			htm += "<b>Class: </b>" + h.getRoleToString();
-			htm += "<b>SubClass: </b>" + h.getSubRoleToString();
-			htm += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
-			htm += "<b>Description: </b>" + h.getDescription() + "<BR>";
-			htm += "<b>Abilities: </b>" + h.getAbilityToString();
-			htm += "_____________________________________________<BR><BR>";
-			htm += "</body></html>";
+		String returnProduce = "";
+
+		if (produce.equalsIgnoreCase("html")) {
+			returnProduce = "<html><head><font size=5><b>Hero's Profile</b></head></font><BR><BR><body>";
+			for (Hero h : heroes) {
+				returnProduce += "<b>Nome: </b>" + h.getName() + "<BR>";
+				returnProduce += "<b>ID: </b>" + h.getId() + "<BR>";
+				returnProduce += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
+				returnProduce += "<b>Age: </b>" + h.getAge() + "<BR>";
+				returnProduce += "<b>Height: </b>" + h.getHeight() + "<BR>";
+				returnProduce += "<b>Affiliation: </b>" + h.getAffiliation() + "<BR>";
+				returnProduce += "<b>Base of Operations: </b>" + h.getBaseOfOperations() + "<BR>";
+				returnProduce += "<b>Health: </b>" + h.getHealth() + "<BR>";
+				returnProduce += "<b>Armour: </b>" + h.getArmour() + "<BR>";
+				returnProduce += "<b>Shield: </b>" + h.getShield() + "<BR>";
+				returnProduce += "<b>Class: </b>" + h.getRoleToString();
+				returnProduce += "<b>SubClass: </b>" + h.getSubRoleToString();
+				returnProduce += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
+				returnProduce += "<b>Description: </b>" + h.getDescription() + "<BR>";
+				returnProduce += "<b>Abilities: </b>" + h.getAbilityToString();
+				returnProduce += "_____________________________________________<BR><BR>";
+				returnProduce += "</body></html>";
+			}
+		} else if (produce.equalsIgnoreCase("json")) {
+			returnProduce = gson.toJson(heroConsumer.getHeroes());
+		} else {
+			returnProduce = "Especifique uma saída válida: html ou json";
 		}
-		
-		return htm;
+
+		return returnProduce;
 	}
 
-	@RequestMapping(value = "/heroes/{id}", produces = { "text/html" })
-	public String getHeroId(@PathVariable("id") String feature) {
+	@RequestMapping(value = "/hero/{id}")
+	public String getHeroId(@PathVariable("id") String feature,
+			                @RequestParam(value = "produce", defaultValue = "json") String produce) {
 
+		Gson gson = new Gson();
+		String returnProduce = "";
 		
 		Hero h = new Hero();
 		int id = Integer.parseInt(feature);
@@ -67,26 +83,33 @@ public class OwController {
 			if (h.getId() == id)
 				break;
 		}
-		String htm = "<html><head><font size=5><b>"+ h.getName() +"'s Profile</b>"
-				+ "</font></head><body>";
-		htm += "<BR><b>Id: </b>" + h.getId() + "<BR>";
-		htm += "<b>Nome: </b>" + h.getName() + "<BR>";
-		htm += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
-		htm += "<b>Age: </b>" + h.getAge() + "<BR>";
-		htm += "<b>Height: </b>" + h.getHeight() + "<BR>";
-		htm += "<b>Affiliation: </b>" + h.getAffiliation() + "<BR>";
-		htm += "<b>Base of Operations: </b>" + h.getBaseOfOperations() + "<BR>";
-		htm += "<b>Health: </b>" + h.getHealth() + "<BR>";
-		htm += "<b>Armour: </b>" + h.getArmour() + "<BR>";
-		htm += "<b>Shield: </b>" + h.getShield() + "<BR>";
-		htm += "<b>Class: </b>" + h.getRoleToString();
-		htm += "<b>SubClass: </b>" + h.getSubRoleToString();
-		htm += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
-		htm += "<b>Description: </b>" + h.getDescription() + "<BR>";
-		htm += "<b>Abilities: </b>" + h.getAbilityToString();
-
-		htm += "</body></html>";
-		return htm;
+		
+		if (produce.equalsIgnoreCase("html")) {
+			
+		returnProduce = "<html><head><font size=5><b>" + h.getName() + "'s Profile</b>" + "</font></head><body>";
+		returnProduce += "<BR><b>Id: </b>" + h.getId() + "<BR>";
+		returnProduce += "<b>Nome: </b>" + h.getName() + "<BR>";
+		returnProduce += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
+		returnProduce += "<b>Age: </b>" + h.getAge() + "<BR>";
+		returnProduce += "<b>Height: </b>" + h.getHeight() + "<BR>";
+		returnProduce += "<b>Affiliation: </b>" + h.getAffiliation() + "<BR>";
+		returnProduce += "<b>Base of Operations: </b>" + h.getBaseOfOperations() + "<BR>";
+		returnProduce += "<b>Health: </b>" + h.getHealth() + "<BR>";
+		returnProduce += "<b>Armour: </b>" + h.getArmour() + "<BR>";
+		returnProduce += "<b>Shield: </b>" + h.getShield() + "<BR>";
+		returnProduce += "<b>Class: </b>" + h.getRoleToString();
+		returnProduce += "<b>SubClass: </b>" + h.getSubRoleToString();
+		returnProduce += "<b>Difficulty: </b>" + h.getDifficulty() + "<BR>";
+		returnProduce += "<b>Description: </b>" + h.getDescription() + "<BR>";
+		returnProduce += "<b>Abilities: </b>" + h.getAbilityToString();
+		returnProduce += "</body></html>";
+		
+		} else if (produce.equalsIgnoreCase("json")) {
+			returnProduce = gson.toJson(h);
+		} else {
+			returnProduce = "Especifique uma saída válida: html ou json";
+		}
+		return returnProduce;
 	}
 	
 	@RequestMapping(value = "/heroes/age/{init}/{final}", produces = { "text/html" })
@@ -112,7 +135,7 @@ public class OwController {
 	/*----MAPS----*/
 	/*------------*/
 
-	@RequestMapping(value = "/maps", produces = {"text/html"})
+	@RequestMapping(value = "/maps", produces = { "text/html" })
 	public String getMaps() {
 		String htm = "<html><head><font size=5><b>All Maps</b></head></font><BR><BR><body>";
 		for (Maps m : mapConsumer.getMaps()) {
@@ -178,7 +201,7 @@ public class OwController {
 			htm += "<b>Description: </b>" + a.getDescription() + "<BR>";
 			htm += "<b>Reward: </b><BR>";
 			htm += a.getRewardToString() + "<BR>";
-			
+
 		}
 		htm += "</body></html>";
 		return htm;
