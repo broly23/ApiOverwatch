@@ -36,7 +36,7 @@ public class OwController {
 	public String getHeroes(@RequestParam(value="produce", defaultValue="json") String produce) {
 		Gson gson = new Gson();
 		List<Hero> heroes = heroConsumer.getHeroes();
-
+		
 		String returnProduce = "";
 
 		if (produce.equalsIgnoreCase("html")) {
@@ -86,7 +86,7 @@ public class OwController {
 		
 		if (produce.equalsIgnoreCase("html")) {
 			
-		returnProduce = "<html><head><font size=5><b>" + h.getName() + "'s Profile</b>" + "</font></head><body>";
+		returnProduce += "<html><head><font size=5><b>" + h.getName() + "'s Profile</b>" + "</font></head><body>";
 		returnProduce += "<BR><b>Id: </b>" + h.getId() + "<BR>";
 		returnProduce += "<b>Nome: </b>" + h.getName() + "<BR>";
 		returnProduce += "<b>Real Nome: </b>" + h.getRealName() + "<BR>";
@@ -135,24 +135,41 @@ public class OwController {
 	/*----MAPS----*/
 	/*------------*/
 
-	@RequestMapping(value = "/maps", produces = { "text/html" })
-	public String getMaps() {
-		String htm = "<html><head><font size=5><b>All Maps</b></head></font><BR><BR><body>";
-		for (Maps m : mapConsumer.getMaps()) {
-			htm += "<b>Id: </b>" + m.getId() + "<BR>";
-			htm += "<b>Nome: </b>" + m.getName() + "<BR>";
-			htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
-			htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
-			htm += "<b>Stage: </b>" + m.getStageToString();
-			htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
-			htm += "_____________________________________________<BR><BR>";
-			htm += "</body></html>";
+	@RequestMapping(value = "/maps")
+	public String getMaps(@RequestParam(value="produce", defaultValue="json") String produce) {
+		Gson gson = new Gson();
+		List<Maps> maps = mapConsumer.getMaps();
+		String htm = "";
+		
+		
+		if (produce.equalsIgnoreCase("html")) {
+			for (Maps m : maps) {
+				htm += "<html><head><font size=5><b>All Maps</b></head></font><BR><BR><body>";
+				htm += "<b>Id: </b>" + m.getId() + "<BR>";
+				htm += "<b>Nome: </b>" + m.getName() + "<BR>";
+				htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
+				htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
+				htm += "<b>Stage: </b>" + m.getStageToString();
+				htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
+				htm += "_____________________________________________<BR><BR>";
+				htm += "</body></html>";
+			}
+		}else if (produce.equalsIgnoreCase("json")) {
+			htm = gson.toJson(mapConsumer.getMaps());	
+		
+		} else {
+			htm = "Especifique uma saída válida: html ou json";
 		}
 		return htm;
 	}
+	
 
-	@RequestMapping(value = "/maps/{id}", produces = { "text/html" })
-	public String getMapId(@PathVariable("id") String feature) {
+	@RequestMapping(value = "/map/{id}")
+	public String getMapId(@PathVariable("id") String feature,
+			                @RequestParam(value = "produce", defaultValue = "json") String produce) {
+
+		Gson gson = new Gson();
+		String htm = "";
 
 		Maps m = new Maps();
 		int id = Integer.parseInt(feature);
@@ -161,14 +178,21 @@ public class OwController {
 			if (m.getId() == id)
 				break;
 		}
-		String htm = "<html><head><h1 style=\"color:green;\"><span style=\"margin-left:3em\">"
-				+ "<b>Map</b></h1></span></head><body>";
-		htm += "<b>Id: </b>" + m.getId() + "<BR>";
-		htm += "<b>Nome: </b>" + m.getName() + "<BR>";
-		htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
-		htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
-		htm += "<b>Stage: </b>" + m.getStageToString();
-		htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
+		if (produce.equalsIgnoreCase("html")) {
+			htm += "<html><head><h1 style=\"color:green;\"><span style=\"margin-left:3em\">"
+					+ "<b>Map</b></h1></span></head><body>";
+			htm += "<b>Id: </b>" + m.getId() + "<BR>";
+			htm += "<b>Nome: </b>" + m.getName() + "<BR>";
+			htm += "<b>Location: </b>" + m.getLocation() + "<BR>";
+			htm += "<b>Mode: </b>" + m.getModeToString() + "<BR>";
+			htm += "<b>Stage: </b>" + m.getStageToString();
+			htm += "<b>Event: </b>" + m.getEventToString() + "<BR>";
+		}
+		else if (produce.equalsIgnoreCase("json")) {
+			htm = gson.toJson(m);
+		} else {
+			htm = "Especifique uma saída válida: html ou json";
+		}
 
 		return htm;
 	}
@@ -207,3 +231,4 @@ public class OwController {
 		return htm;
 	}
 }
+

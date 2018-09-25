@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>Api_overwatch</groupId>
-	<artifactId>com.ApiStudy</artifactId>
+	<artifactId>com.ApiOwFront</artifactId>
 	<version>0.1.0</version>
 
 	<parent>
